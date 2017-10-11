@@ -152,15 +152,15 @@ syntax on                       " enable syntax
 
 " Choose color scheme and background according to time
 let s:time = strftime("%H")
-if s:time < 6 || s:time >= 18
+if s:time > 6 && s:time <= 18
+	set background=light
+	let g:PaperColor_Theme_Options = {'theme':{'default':{'allow_italic':1}}}
+	colorscheme PaperColor
+	" highlight Comment cterm=italic gui=italic
+else
 	set background=dark
 	colorscheme gruvbox
 	" colorscheme solarized
-else
-	set background=light
-	colorscheme PaperColor
-	let g:airline_theme='papercolor'
-	highlight Comment cterm=italic gui=italic
 endif
 
 " Allow to inverse background
@@ -486,7 +486,7 @@ nnoremap <silent> <leader>gv :Gitv --all<CR>
 nnoremap <silent> <leader>gV :Gitv! --all<CR>
 vnoremap <silent> <leader>gV :Gitv! --all<CR>
 
-let g:Gitv_OpenHorizontal = 'auto'
+let g:Gitv_OpenHorizontal = 0
 let g:Gitv_WipeAllOnClose = 1
 let g:Gitv_DoNotMapCtrlKey = 1
 " let g:Gitv_WrapLines = 1
