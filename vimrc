@@ -39,8 +39,9 @@ Plugin 'VundleVim/Vundle.vim'
 
 " Color schemes
 Plugin 'NLKNguyen/papercolor-theme'
-Plugin 'morhetz/gruvbox'
-Plugin 'altercation/vim-colors-solarized'
+Plugin 'dracula/vim'
+" Plugin 'morhetz/gruvbox'
+" Plugin 'altercation/vim-colors-solarized'
 
 Plugin 'mhinz/vim-startify'
 Plugin 'majutsushi/tagbar'
@@ -150,17 +151,15 @@ set t_vb=
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 syntax on                       " enable syntax
 
+let g:PaperColor_Theme_Options = {'theme':{'default':{'allow_italic':1}}}
 " Choose color scheme and background according to time
 let s:time = strftime("%H")
 if s:time > 6 && s:time <= 18
 	set background=light
-	let g:PaperColor_Theme_Options = {'theme':{'default':{'allow_italic':1}}}
 	colorscheme PaperColor
-	" highlight Comment cterm=italic gui=italic
 else
 	set background=dark
-	colorscheme gruvbox
-	" colorscheme solarized
+	colorscheme dracula
 endif
 
 " Allow to inverse background
