@@ -57,12 +57,18 @@ Plugin 'easymotion/vim-easymotion'
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'Yggdroot/indentLine'
 Plugin 'mbbill/undotree'
-Plugin 'Shougo/neocomplete'
 Plugin 'Shougo/neosnippet'
 Plugin 'Shougo/neosnippet-snippets'
+Plugin 'Chiel92/vim-autoformat'
+
+" Plugin 'Shougo/neocomplete'
+Plugin 'Shougo/deoplete.nvim'
+Plugin 'roxma/nvim-yarp'
+Plugin 'roxma/vim-hug-neovim-rpc' 
 
 " A solid language pack for Vim
-Plugin 'scrooloose/syntastic'
+Plugin 'w0rp/ale'
+" Plugin 'scrooloose/syntastic'
 Plugin 'sheerun/vim-polyglot'
 
 Plugin 'fatih/vim-go'
@@ -406,10 +412,8 @@ nnoremap <silent> <leader>xx ggvGJ:silent 1,$!xmllint --format --recover - 2>/de
 " }}}
 
 """""""""""""""python {{{"""""""""""""""""""""""""""""""""""""""
-autocmd FileType python set tabstop=8 expandtab shiftwidth=4 softtabstop=4
-autocmd FileType python nnoremap <leader>r :!python %<CR>
-
-let g:syntastic_python_checkers = ['flake8', 'pyflakes', 'pylint']
+" autocmd FileType python set tabstop=8 expandtab shiftwidth=4 softtabstop=4
+autocmd FileType python nnoremap <leader>r :!python3 %<CR>
 
 " }}}
 
@@ -447,7 +451,24 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 
 " }}}
 
-"""""""""""""""nerdtree syntax highlight {{{""""""""""""""""""""
+"""""""""""""""ale {{{""""""""""""""""""""""""""""""""""""""""""
+let g:ale_sign_column_always = 1
+
+" }}}
+
+"""""""""""""""autoformate {{{""""""""""""""""""""""""""""""""""
+noremap <F3> :Autoformat<CR>
+" au BufWrite * :Autoformat
+
+" }}}
+
+"""""""""""""""deoplete {{{"""""""""""""""""""""""""""""""""""""
+" Use deoplete.
+let g:deoplete#enable_at_startup = 1
+
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
 
 " }}}
 
@@ -538,6 +559,7 @@ endfunction
 """""""""""""""vim-javascript {{{"""""""""""""""""""""""""""""""
 set conceallevel=1
 map <leader>l :exec &conceallevel ? "set conceallevel=0" : "set conceallevel=1"<CR>
+
 let g:javascript_conceal_function             = "ƒ"
 let g:javascript_conceal_null                 = "ø"
 let g:javascript_conceal_this                 = "@"
@@ -562,20 +584,17 @@ let g:go_highlight_interfaces = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
 
+au FileType go nmap <leader>r <Plug>(go-run)
+au FileType go nmap <leader>b <Plug>(go-build)
+au FileType go nmap <leader>t <Plug>(go-test)
+au FileType go nmap <leader>c <Plug>(go-coverage)
+
 " Enable goimports to automatically insert import paths instead of gofmt
 let g:go_fmt_command = "goimports"
 " By default vim-go shows errors for the fmt command, to disable it
 let g:go_fmt_fail_silently = 1
 " Don't show the identifier information when completion is done 
 let g:go_echo_go_info = 0
-
-au FileType go nmap <leader>r <Plug>(go-run)
-au FileType go nmap <leader>b <Plug>(go-build)
-au FileType go nmap <leader>t <Plug>(go-test)
-au FileType go nmap <leader>c <Plug>(go-coverage)
-
-" Using with Syntastic
-let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
 
 " }}}
 
@@ -597,81 +616,6 @@ smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 if has('conceal')
 	set conceallevel=2 concealcursor=niv
 endif
-
-" }}}
-
-"""""""""""""""neocomplete {{{""""""""""""""""""""""""""""""""""
-"Note: This option must set it in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
-" Disable AutoComplPop.
-let g:acp_enableAtStartup = 0
-" Use neocomplete.
-let g:neocomplete#enable_at_startup = 1
-" Use smartcase.
-let g:neocomplete#enable_smart_case = 1
-" Set minimum syntax keyword length.
-let g:neocomplete#sources#syntax#min_keyword_length = 3
-let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
-
-" Define dictionary.
-let g:neocomplete#sources#dictionary#dictionaries = {
-			\ 'default' : '',
-			\ 'vimshell' : $HOME.'/.vimshell_hist',
-			\ 'scheme' : $HOME.'/.gosh_completions'
-			\ }
-
-" Define keyword.
-if !exists('g:neocomplete#keyword_patterns')
-	let g:neocomplete#keyword_patterns = {}
-endif
-let g:neocomplete#keyword_patterns['default'] = '\h\w*'
-
-" Plugin key-mappings.
-inoremap <expr><C-g>     neocomplete#undo_completion()
-inoremap <expr><C-l>     neocomplete#complete_common_string()
-
-" Recommended key-mappings.
-" <CR>: close popup and save indent.
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-	return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
-	" For no inserting <CR> key.
-	"return pumvisible() ? "\<C-y>" : "\<CR>"
-endfunction
-" <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-" <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-" Close popup by <Space>.
-"inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
-
-" AutoComplPop like behavior.
-"let g:neocomplete#enable_auto_select = 1
-
-" Shell like behavior(not recommended).
-"set completeopt+=longest
-"let g:neocomplete#enable_auto_select = 1
-"let g:neocomplete#disable_auto_complete = 1
-"inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
-
-" Enable omni completion.
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-
-" Enable heavy omni completion.
-if !exists('g:neocomplete#sources#omni#input_patterns')
-	let g:neocomplete#sources#omni#input_patterns = {}
-endif
-"let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-"let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-"let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-
-" For perlomni.vim setting.
-" https://github.com/c9s/perlomni.vim
-let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 
 " }}}
 
