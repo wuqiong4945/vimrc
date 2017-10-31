@@ -6,7 +6,7 @@
 "
 " Author: Wu Qiong <wuqiong4945@hotmail.com>
 " Source: https://github.com/
-" Version: 1.1 - 2017/08/01 (Aug 01) @ 16:14
+" Version: 1.2 - 2017/10/31 (Oct 31) @ 21:59
 "       Get this config, nice color schemes and lots of plugins!
 
 " vim set foldmarker={{{,}}} foldlevel=0 foldmethod=marker spell:
@@ -406,8 +406,6 @@ exe 'inoremap <script> <C-V>' paste#paste_cmd['i']
 """""""""""""""xml {{{""""""""""""""""""""""""""""""""""""""""""
 " Don't delete comment character when joining commented lines
 autocmd FileType xml setlocal formatoptions-=j
-" Format xml file
-nnoremap <silent> <leader>xx ggvGJ:silent 1,$!xmllint --format --recover - 2>/dev/null<CR>
 
 " }}}
 
@@ -457,7 +455,7 @@ let g:ale_sign_column_always = 1
 " }}}
 
 """""""""""""""autoformate {{{""""""""""""""""""""""""""""""""""
-noremap <F3> :Autoformat<CR>
+noremap <F4> :Autoformat<CR>
 " au BufWrite * :Autoformat
 
 " }}}
@@ -536,22 +534,6 @@ function! s:align()
 	let c = nr2char(getchar())
 	exec 'Tabularize/'.c.'/l1'
 	echo 'Tabularize/'.c.'/l1'
-endfunction
-
-" }}}
-
-"""""""""""""""syntastic {{{""""""""""""""""""""""""""""""""""""
-let g:syntastic_always_populate_loc_list = 1
-" Automatically closed when no errors, not opened automatically
-let g:syntastic_auto_loc_list = 2
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-
-" Make the error window smaller if fewer than 10 errors are found
-function! SyntasticCheckHook(errors)
-	if !empty(a:errors)
-		let g:syntastic_loc_list_height = min([len(a:errors), 10])
-	endif
 endfunction
 
 " }}}
