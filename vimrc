@@ -64,7 +64,7 @@ Plugin 'Chiel92/vim-autoformat'
 " Plugin 'Shougo/neocomplete'
 Plugin 'Shougo/deoplete.nvim'
 Plugin 'roxma/nvim-yarp'
-Plugin 'roxma/vim-hug-neovim-rpc' 
+Plugin 'roxma/vim-hug-neovim-rpc'
 
 " A solid language pack for Vim
 Plugin 'w0rp/ale'
@@ -124,7 +124,7 @@ set hidden                      " can load a buffer in a window that currently h
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface {{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set number		                	" line numbers on
+set number											" line numbers on
 " set relativenumber
 set cursorline                  " highlight current line
 set guioptions+=b               " show horizontal scroll bar
@@ -459,7 +459,7 @@ let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 " }}}
 
 """""""""""""""autoformate {{{""""""""""""""""""""""""""""""""""
-noremap <F4> :Autoformat<CR>
+noremap <silent> <F4> :Autoformat<CR>
 " au BufWrite * :Autoformat
 
 " }}}
@@ -493,7 +493,7 @@ nnoremap <silent> <leader>uu :UndotreeToggle<cr>
 
 """""""""""""""fugitive {{{"""""""""""""""""""""""""""""""""""""
 nnoremap <leader>gs :Gstatus<CR>
-nnoremap <leader>gd :Gvdiff 
+nnoremap <leader>gd :Gvdiff
 
 " }}}
 
@@ -579,7 +579,7 @@ au FileType go nmap <leader>c <Plug>(go-coverage)
 let g:go_fmt_command = "goimports"
 " By default vim-go shows errors for the fmt command, to disable it
 let g:go_fmt_fail_silently = 1
-" Don't show the identifier information when completion is done 
+" Don't show the identifier information when completion is done
 let g:go_echo_go_info = 0
 
 " }}}
