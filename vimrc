@@ -6,7 +6,7 @@
 "
 " Author: Wu Qiong <wuqiong4945@hotmail.com>
 " Source: https://github.com/
-" Version: 1.2 - 2017/10/31 (Oct 31) @ 21:59
+" Version: 2.0 - 2017/11/04 (Nov 04) @ 01:46
 "       Get this config, nice color schemes and lots of plugins!
 
 " vim set foldmarker={{{,}}} foldlevel=0 foldmethod=marker spell:
@@ -18,88 +18,65 @@
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Vundle {{{
+" => vim-plug {{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set nocompatible              " be iMproved, required
-filetype off                  " required
-
-" set the runtime path to include Vundle and initialize
 if !has("win32")
-	set rtp+=~/.vim/bundle/Vundle.vim
-	call vundle#begin()
+	call plug#begin('~/.vim/plugged')
 else
-	set rtp+=$VIM/vimfiles/bundle/Vundle.vim/
-	call vundle#begin('$VIM/vimfiles/bundle/')
+	call plug#begin('$VIM/vimfiles/plugged')
 endif
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
-
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
 
 " Color schemes
-Plugin 'NLKNguyen/papercolor-theme'
-Plugin 'dracula/vim'
-" Plugin 'morhetz/gruvbox'
-" Plugin 'altercation/vim-colors-solarized'
+Plug 'NLKNguyen/papercolor-theme'
+Plug 'dracula/vim'
+" Plug 'morhetz/gruvbox'
+" Plug 'altercation/vim-colors-solarized'
 
-Plugin 'mhinz/vim-startify'
-Plugin 'majutsushi/tagbar'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'scrooloose/nerdtree'
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'godlygeek/tabular'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-repeat'
-Plugin 'easymotion/vim-easymotion'
-Plugin 'jiangmiao/auto-pairs'
-Plugin 'Yggdroot/indentLine'
-Plugin 'mbbill/undotree'
-Plugin 'Shougo/neosnippet'
-Plugin 'Shougo/neosnippet-snippets'
-Plugin 'Chiel92/vim-autoformat'
+Plug 'mhinz/vim-startify'
+Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'scrooloose/nerdcommenter'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'junegunn/vim-easy-align'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
+Plug 'easymotion/vim-easymotion'
+Plug 'jiangmiao/auto-pairs'
+Plug 'Yggdroot/indentLine'
+Plug 'mbbill/undotree'
+Plug 'Chiel92/vim-autoformat'
 
-" Plugin 'Shougo/neocomplete'
-Plugin 'Shougo/deoplete.nvim'
-Plugin 'roxma/nvim-yarp'
-Plugin 'roxma/vim-hug-neovim-rpc'
+Plug 'Shougo/neosnippet'
+Plug 'Shougo/neosnippet-snippets'
 
-" A solid language pack for Vim
-Plugin 'w0rp/ale'
-" Plugin 'scrooloose/syntastic'
-Plugin 'sheerun/vim-polyglot'
+" Plug 'Shougo/neocomplete'
+Plug 'Shougo/deoplete.nvim'
+Plug 'roxma/nvim-yarp'
+Plug 'roxma/vim-hug-neovim-rpc'
+Plug 'zchee/deoplete-go', { 'do': 'make',  'for': 'go' }
+Plug 'zchee/deoplete-jedi', { 'for': 'py' }
 
-Plugin 'fatih/vim-go'
-Plugin 'pangloss/vim-javascript'
-Plugin 'mattn/emmet-vim'
-" Plugin 'klen/python-mode'
+Plug 'w0rp/ale'
+" Plug 'scrooloose/syntastic'
+Plug 'sheerun/vim-polyglot'
+
+Plug 'fatih/vim-go', { 'for': 'go' }
+Plug 'pangloss/vim-javascript', { 'for': 'js' }
+Plug 'mattn/emmet-vim'
 
 " For git
-Plugin 'tpope/vim-fugitive'
-Plugin 'gregsexton/gitv'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'Xuyuanp/nerdtree-git-plugin'
+Plug 'tpope/vim-fugitive'
+Plug 'gregsexton/gitv'
+Plug 'airblade/vim-gitgutter'
+Plug 'Xuyuanp/nerdtree-git-plugin'
 
 " Icons
-Plugin 'ryanoasis/vim-devicons'
-Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'ryanoasis/vim-devicons'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
+call plug#end()
 
 " }}}
 
@@ -118,6 +95,7 @@ set autochdir                   " set directory of current editing file as cwd
 set autoread                    " auto read when a file is changed from the outside
 set clipboard^=unnamed,unnamedplus      " use clipboard buffer
 set hidden                      " can load a buffer in a window that currently has a modified buffer
+set completeopt+=noselect
 
 " }}}
 
@@ -202,6 +180,8 @@ set fileformats=unix,dos,mac    " use Unix as the standard file type
 set nobackup
 set writebackup
 set noswapfile
+
+filetype plugin on
 
 " Show the textwidth visually
 set colorcolumn=+1,+2
@@ -302,7 +282,7 @@ cabbrev <silent> bd <C-r>=(getcmdtype()==#':' && getcmdpos()==1 ? 'lclose\|bdele
 
 " Use the arrows to something usefull
 nnoremap <up>       :Errors<CR>
-nnoremap <down>     :lclose<CR>
+nnoremap <down>     :cclose<CR>
 nnoremap <left>     :bprevious<CR>
 nnoremap <right>    :bnext<CR>
 
@@ -465,8 +445,13 @@ noremap <silent> <F4> :Autoformat<CR>
 " }}}
 
 """""""""""""""deoplete {{{"""""""""""""""""""""""""""""""""""""
-" Use deoplete.
+" Skip the check of neovim module
+let g:python3_host_skip_check = 1
+" Run deoplete.nvim automatically
 let g:deoplete#enable_at_startup = 1
+" deoplete-go settings
+let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
+let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
 
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
@@ -532,13 +517,13 @@ let g:DevIconsEnableFoldersOpenClose = 1
 
 " }}}
 
-"""""""""""""""tabular {{{""""""""""""""""""""""""""""""""""""""
-nnoremap <silent> <C-t> :call <SID>align()<CR>
-function! s:align()
-	let c = nr2char(getchar())
-	exec 'Tabularize/'.c.'/l1'
-	echo 'Tabularize/'.c.'/l1'
-endfunction
+"""""""""""""""vim_easy_align {{{"""""""""""""""""""""""""""""""
+vmap <leader>a <Plug>(EasyAlign)
+nmap <leader>a <Plug>(EasyAlign)
+if !exists('g:easy_align_delimiters')
+  let g:easy_align_delimiters = {}
+endif
+let g:easy_align_delimiters['#'] = { 'pattern': '#', 'ignore_groups': ['String'] }
 
 " }}}
 
@@ -563,6 +548,9 @@ let g:javascript_conceal_underscore_arrow_function = "🞅"
 
 """""""""""""""vim-go {{{"""""""""""""""""""""""""""""""""""""""
 " By default syntax-highlighting for Functions, Methods and Structs is disabled
+let g:go_highlight_types = 1
+let g:go_highlight_extra_types = 1
+let g:go_highlight_fields = 1
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_structs = 1
@@ -575,12 +563,17 @@ au FileType go nmap <leader>b <Plug>(go-build)
 au FileType go nmap <leader>t <Plug>(go-test)
 au FileType go nmap <leader>c <Plug>(go-coverage)
 
+autocmd FileType go nmap <Leader>i <Plug>(go-info)
+
 " Enable goimports to automatically insert import paths instead of gofmt
 let g:go_fmt_command = "goimports"
 " By default vim-go shows errors for the fmt command, to disable it
 let g:go_fmt_fail_silently = 1
 " Don't show the identifier information when completion is done
-let g:go_echo_go_info = 0
+" let g:go_echo_go_info = 0
+let g:go_auto_type_info = 1
+" Automatically highlight matching identifiers
+let g:go_auto_sameids = 1
 
 " }}}
 
