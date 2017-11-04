@@ -279,12 +279,8 @@ cabbrev <silent> bd <C-r>=(getcmdtype()==#':' && getcmdpos()==1 ? 'lclose\|bdele
 " Use the arrows to something usefull
 nnoremap <up>       :cprevious<CR>
 nnoremap <down>     :cnext<CR>
-nnoremap <left>     :bprevious<CR>
-nnoremap <right>    :bnext<CR>
-
-" nnoremap <down>     :cclose<CR>
-" Show the current list of errors
-nnoremap <leader>er :botright cope<CR>
+nnoremap <left>     :botright cope<CR>    " Show error list
+nnoremap <right>    :cclose<CR>
 
 " Quickly open a buffer for scribble
 nnoremap <leader>q  :e ~/buffer<cr>
