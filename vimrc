@@ -33,19 +33,19 @@ Plug 'dracula/vim'
 " Plug 'altercation/vim-colors-solarized'
 
 Plug 'mhinz/vim-startify'
-Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
 Plug 'scrooloose/nerdcommenter'
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'junegunn/vim-easy-align'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-repeat'
-Plug 'easymotion/vim-easymotion'
 Plug 'jiangmiao/auto-pairs'
 Plug 'Yggdroot/indentLine'
 Plug 'mbbill/undotree'
+Plug 'junegunn/vim-easy-align'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
+Plug 'easymotion/vim-easymotion'
 Plug 'Chiel92/vim-autoformat'
 
 Plug 'Shougo/neosnippet'
@@ -244,10 +244,6 @@ nnoremap <leader>g :vimgrep // **/*.<left><left><left><left><left><left><left>
 " Vimgreps in the current file
 nnoremap <leader><space> :vimgrep // <C-r>%<C-a><right><right><right><right><right><right><right><right><right>
 
-" Show the current list of errors
-nnoremap <leader>er :botright cope<CR>
-nnoremap <leader>n  :cnext<CR>
-nnoremap <leader>p  :cprevious<CR>
 " map <Leader>p :set paste<CR>o<esc>"+]p:set nopaste<cr>
 
 " }}}
@@ -276,15 +272,19 @@ set viminfo^=!                  " save and restore global variables that start w
 nnoremap <C-Tab>    :bnext<CR>
 nnoremap <C-S-Tab>  :bprevious<CR>
 nnoremap <C-q>      :lclose<CR>:bdelete<CR>
-nnoremap <leader>ba :%bdelete<CR>
+nnoremap <C-S-q>    :%bdelete<CR>
 " Close error window automatically when :bdelete it
 cabbrev <silent> bd <C-r>=(getcmdtype()==#':' && getcmdpos()==1 ? 'lclose\|bdelete' : 'bd')<CR>
 
 " Use the arrows to something usefull
-nnoremap <up>       :Errors<CR>
-nnoremap <down>     :cclose<CR>
+nnoremap <up>       :cprevious<CR>
+nnoremap <down>     :cnext<CR>
 nnoremap <left>     :bprevious<CR>
 nnoremap <right>    :bnext<CR>
+
+" nnoremap <down>     :cclose<CR>
+" Show the current list of errors
+nnoremap <leader>er :botright cope<CR>
 
 " Quickly open a buffer for scribble
 nnoremap <leader>q  :e ~/buffer<cr>
@@ -521,7 +521,7 @@ let g:DevIconsEnableFoldersOpenClose = 1
 vmap <leader>a <Plug>(EasyAlign)
 nmap <leader>a <Plug>(EasyAlign)
 if !exists('g:easy_align_delimiters')
-  let g:easy_align_delimiters = {}
+	let g:easy_align_delimiters = {}
 endif
 let g:easy_align_delimiters['#'] = { 'pattern': '#', 'ignore_groups': ['String'] }
 
