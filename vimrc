@@ -56,14 +56,14 @@ Plug 'Shougo/deoplete.nvim'
 Plug 'roxma/nvim-yarp'
 Plug 'roxma/vim-hug-neovim-rpc'
 Plug 'zchee/deoplete-go', { 'do': 'make',  'for': 'go' }
-Plug 'zchee/deoplete-jedi', { 'for': 'py' }
+Plug 'zchee/deoplete-jedi', { 'for': 'python' }
 
 Plug 'w0rp/ale'
 " Plug 'scrooloose/syntastic'
 Plug 'sheerun/vim-polyglot'
 
 Plug 'fatih/vim-go', { 'for': 'go' }
-Plug 'pangloss/vim-javascript', { 'for': 'js' }
+Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'mattn/emmet-vim'
 
 " For git
@@ -269,18 +269,18 @@ set splitbelow                  " puts new split windows to the bottom of the cu
 set viminfo^=!                  " save and restore global variables that start with an uppercase letter
 
 " Buffers
-nnoremap <C-Tab>    :bnext<CR>
-nnoremap <C-S-Tab>  :bprevious<CR>
-nnoremap <C-q>      :lclose<CR>:bdelete<CR>
-nnoremap <C-S-q>    :%bdelete<CR>
+nnoremap <silent> <C-Tab>    :bnext<CR>
+nnoremap <silent> <C-S-Tab>  :bprevious<CR>
+nnoremap <silent> <C-q>      :lclose<CR>:bdelete<CR>
+nnoremap <silent> <C-S-q>    :%bdelete<CR>
 " Close error window automatically when :bdelete it
 cabbrev <silent> bd <C-r>=(getcmdtype()==#':' && getcmdpos()==1 ? 'lclose\|bdelete' : 'bd')<CR>
 
 " Use the arrows to something usefull
-nnoremap <up>       :cprevious<CR>
-nnoremap <down>     :cnext<CR>
-nnoremap <left>     :botright cope<CR>    " Show error list
-nnoremap <right>    :cclose<CR>
+nnoremap <silent> <up>     :cprevious<CR>
+nnoremap <silent> <down>   :cnext<CR>
+nnoremap <silent> <left>   :botright cope<CR>    " Show error list
+nnoremap <silent> <right>  :cclose<CR>
 
 " Quickly open a buffer for scribble
 nnoremap <leader>q  :e ~/buffer<cr>
