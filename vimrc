@@ -272,7 +272,7 @@ set viminfo^=!                  " save and restore global variables that start w
 nnoremap <silent> <C-Tab>    :bnext<CR>
 nnoremap <silent> <C-S-Tab>  :bprevious<CR>
 nnoremap <silent> <C-q>      :lclose<CR>:bdelete<CR>
-nnoremap <silent> <C-S-q>    :%bdelete<CR>
+nnoremap <silent> <S-q>      :%bdelete<CR>
 " Close error window automatically when :bdelete it
 cabbrev <silent> bd <C-r>=(getcmdtype()==#':' && getcmdpos()==1 ? 'lclose\|bdelete' : 'bd')<CR>
 
