@@ -6,7 +6,7 @@
 "
 " Author: Wu Qiong <wuqiong4945@hotmail.com>
 " Source: https://github.com/
-" Version: 2.0 - 2017/11/04 (Nov 04) @ 01:46
+" Version: 3.0 - 2017/11/15 (Nov 15) @ 21:52
 "       Get this config, nice color schemes and lots of plugins!
 
 " vim set foldmarker={{{,}}} foldlevel=0 foldmethod=marker spell:
@@ -36,7 +36,7 @@ Plug 'mhinz/vim-startify'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-Plug 'majutsushi/tagbar'    ", { 'on': 'TagbarToggle' }
+Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
 Plug 'scrooloose/nerdcommenter'
 Plug 'jiangmiao/auto-pairs'
 Plug 'Yggdroot/indentLine'
@@ -48,21 +48,10 @@ Plug 'tpope/vim-repeat'
 Plug 'easymotion/vim-easymotion'
 Plug 'Chiel92/vim-autoformat'
 
-Plug 'Shougo/neosnippet'
-Plug 'Shougo/neosnippet-snippets'
-
-" Plug 'Shougo/neocomplete'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'roxma/nvim-yarp'
-Plug 'roxma/vim-hug-neovim-rpc'
-Plug 'zchee/deoplete-go', { 'do': 'make',  'for': 'go' }
-Plug 'zchee/deoplete-jedi', { 'for': 'python' }
-
 Plug 'w0rp/ale'
 " Plug 'scrooloose/syntastic'
 Plug 'sheerun/vim-polyglot'
 
-Plug 'fatih/vim-go', { 'for': 'go' }
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'mattn/emmet-vim'
 
@@ -84,10 +73,6 @@ call plug#end()
 " => General {{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let mapleader=","               " default is '\'
-" map caps lock to escape
-if !has("win32")
-	autocmd VimEnter * silent !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
-endif
 
 let g:is_posix = 1              " vim's default is archaic bourne shell, bring it up to the 90s
 set confirm                     " confirm when dispose unsaved/readonly file
@@ -373,6 +358,10 @@ nnoremap <silent> <leader>dt :%s/\s\+$//<CR>
 
 exe 'inoremap <script> <C-V>' paste#paste_cmd['i']
 
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
+
 " }}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -382,17 +371,6 @@ exe 'inoremap <script> <C-V>' paste#paste_cmd['i']
 """""""""""""""xml {{{""""""""""""""""""""""""""""""""""""""""""
 " Don't delete comment character when joining commented lines
 autocmd FileType xml setlocal formatoptions-=j
-
-" }}}
-
-"""""""""""""""python {{{"""""""""""""""""""""""""""""""""""""""
-" autocmd FileType python set tabstop=8 expandtab shiftwidth=4 softtabstop=4
-autocmd FileType python nnoremap <leader>r :!python3 %<CR>
-
-" }}}
-
-"""""""""""""""others {{{"""""""""""""""""""""""""""""""""""""""
-autocmd BufRead,BufNewFile *.b2v setfiletype cpp
 
 " }}}
 
@@ -425,42 +403,6 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 
 " }}}
 
-"""""""""""""""ale {{{""""""""""""""""""""""""""""""""""""""""""
-let g:ale_sign_column_always = 1
-
-let g:ale_echo_msg_error_str = 'E'
-let g:ale_echo_msg_warning_str = 'W'
-let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-
-let g:ale_linters = {
-\   'go': ['golint'],
-\}
-let g:ale_set_loclist = 0
-let g:ale_set_quickfix = 1
-
-" }}}
-
-"""""""""""""""autoformate {{{""""""""""""""""""""""""""""""""""
-noremap <silent> <F4> :Autoformat<CR>
-" au BufWrite * :Autoformat
-
-" }}}
-
-"""""""""""""""deoplete {{{"""""""""""""""""""""""""""""""""""""
-" Skip the check of neovim module
-let g:python3_host_skip_check = 1
-" Run deoplete.nvim automatically
-let g:deoplete#enable_at_startup = 1
-" deoplete-go settings
-let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
-let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
-
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
-
-" }}}
-
 """""""""""""""ctags {{{""""""""""""""""""""""""""""""""""""""""
 nnoremap <silent> <F2> :TagbarToggle<CR>
 
@@ -472,21 +414,58 @@ let g:NERDSpaceDelims = 1
 
 " }}}
 
+"""""""""""""""ale {{{""""""""""""""""""""""""""""""""""""""""""
+" Just enable ale when file saved
+let g:ale_lint_on_text_changed = 'never'
+
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+
+let g:ale_set_loclist = 0
+let g:ale_set_quickfix = 1
+
+" }}}
+
+"""""""""""""""vim_easy_align {{{"""""""""""""""""""""""""""""""
+nnoremap <leader>a <Plug>(EasyAlign)
+vnoremap <leader>a <Plug>(EasyAlign)
+if !exists('g:easy_align_delimiters')
+	let g:easy_align_delimiters = {}
+endif
+let g:easy_align_delimiters['#'] = { 'pattern': '#', 'ignore_groups': ['String'] }
+
+" }}}
+
 """""""""""""""undotree {{{"""""""""""""""""""""""""""""""""""""
 " Use :UndotreeToggle to toggle the undo-tree panel
 nnoremap <silent> <leader>uu :UndotreeToggle<cr>
 
 " }}}
 
-"""""""""""""""fugitive {{{"""""""""""""""""""""""""""""""""""""
-nnoremap <leader>gs :Gstatus<CR>
-nnoremap <leader>gd :Gvdiff
+"""""""""""""""autoformate {{{""""""""""""""""""""""""""""""""""
+noremap <silent> <F4> :Autoformat<CR>
+" au BufWrite * :Autoformat
 
 " }}}
 
+"""""""""""""""indentLine {{{"""""""""""""""""""""""""""""""""""
+nnoremap <silent> <F6> :IndentLinesToggle<CR>
+let g:indentLine_enabled = 0
+let g:indentLine_showFirstIndentLevel = 1
+let g:indentLine_char = '┊'
+let g:indentLine_first_char = '┊'
+
+" }}}
 
 """""""""""""""gitgutter {{{""""""""""""""""""""""""""""""""""""
 nnoremap <silent> <leader>gg :GitGutterToggle<CR>
+
+" }}}
+
+"""""""""""""""fugitive {{{"""""""""""""""""""""""""""""""""""""
+nnoremap <silent> <leader>gs :Gstatus<CR>
+nnoremap <leader>gd :Gvdiff
 
 " }}}
 
@@ -502,15 +481,6 @@ let g:Gitv_DoNotMapCtrlKey = 1
 
 " }}}
 
-"""""""""""""""indentLine {{{"""""""""""""""""""""""""""""""""""
-nnoremap <silent> <F6> :IndentLinesToggle<CR>
-let g:indentLine_enabled = 0
-let g:indentLine_showFirstIndentLevel = 1
-let g:indentLine_char = '┊'
-let g:indentLine_first_char = '┊'
-
-" }}}
-
 """""""""""""""vim devicons {{{"""""""""""""""""""""""""""""""""
 " enable folder/directory glyph flag (disabled by default with 0)
 let g:WebDevIconsUnicodeDecorateFolderNodes = 1
@@ -519,85 +489,5 @@ let g:DevIconsEnableFoldersOpenClose = 1
 
 " }}}
 
-"""""""""""""""vim_easy_align {{{"""""""""""""""""""""""""""""""
-vmap <leader>a <Plug>(EasyAlign)
-nmap <leader>a <Plug>(EasyAlign)
-if !exists('g:easy_align_delimiters')
-	let g:easy_align_delimiters = {}
-endif
-let g:easy_align_delimiters['#'] = { 'pattern': '#', 'ignore_groups': ['String'] }
-
-" }}}
-
-"""""""""""""""vim-javascript {{{"""""""""""""""""""""""""""""""
-set conceallevel=1
-map <leader>l :exec &conceallevel ? "set conceallevel=0" : "set conceallevel=1"<CR>
-
-let g:javascript_conceal_function             = "ƒ"
-let g:javascript_conceal_null                 = "ø"
-let g:javascript_conceal_this                 = "@"
-let g:javascript_conceal_return               = "⇚"
-let g:javascript_conceal_undefined            = "¿"
-let g:javascript_conceal_NaN                  = "ℕ"
-let g:javascript_conceal_prototype            = "¶"
-let g:javascript_conceal_static               = "•"
-let g:javascript_conceal_super                = "Ω"
-let g:javascript_conceal_arrow_function       = "⇒"
-let g:javascript_conceal_noarg_arrow_function = "🞅"
-let g:javascript_conceal_underscore_arrow_function = "🞅"
-
-" }}}
-
-"""""""""""""""vim-go {{{"""""""""""""""""""""""""""""""""""""""
-" By default syntax-highlighting for Functions, Methods and Structs is disabled
-let g:go_highlight_types = 1
-let g:go_highlight_extra_types = 1
-let g:go_highlight_fields = 1
-let g:go_highlight_functions = 1
-let g:go_highlight_methods = 1
-let g:go_highlight_structs = 1
-let g:go_highlight_interfaces = 1
-let g:go_highlight_operators = 1
-let g:go_highlight_build_constraints = 1
-
-au FileType go nmap <leader>r <Plug>(go-run)
-au FileType go nmap <leader>b <Plug>(go-build)
-au FileType go nmap <leader>t <Plug>(go-test)
-au FileType go nmap <leader>c <Plug>(go-coverage)
-
-autocmd FileType go nmap <Leader>i <Plug>(go-info)
-
-" Enable goimports to automatically insert import paths instead of gofmt
-let g:go_fmt_command = "goimports"
-" By default vim-go shows errors for the fmt command, to disable it
-let g:go_fmt_fail_silently = 1
-" Don't show the identifier information when completion is done
-" let g:go_echo_go_info = 0
-let g:go_auto_type_info = 1
-" Automatically highlight matching identifiers
-let g:go_auto_sameids = 1
-
-" }}}
-
-"""""""""""""""neosnippet {{{"""""""""""""""""""""""""""""""""""
-" Plugin key-mappings.
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
-
-" SuperTab like snippets behavior.
-"imap <expr><TAB>
-" \ pumvisible() ? "\<C-n>" :
-" \ neosnippet#expandable_or_jumpable() ?
-" \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-			\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-
-" For conceal markers.
-if has('conceal')
-	set conceallevel=2 concealcursor=niv
-endif
-
-" }}}
 
 " }}}
