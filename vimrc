@@ -36,7 +36,7 @@ Plug 'mhinz/vim-startify'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
+Plug 'majutsushi/tagbar'     ", { 'on': 'TagbarToggle' }
 Plug 'scrooloose/nerdcommenter'
 Plug 'jiangmiao/auto-pairs'
 Plug 'Yggdroot/indentLine'
@@ -48,10 +48,16 @@ Plug 'tpope/vim-repeat'
 Plug 'easymotion/vim-easymotion'
 Plug 'Chiel92/vim-autoformat'
 
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-buffer.vim'
+Plug 'prabirshrestha/asyncomplete-gocode.vim'
+
 Plug 'w0rp/ale'
 " Plug 'scrooloose/syntastic'
 Plug 'sheerun/vim-polyglot'
 
+Plug 'fatih/vim-go', { 'for': 'go' }
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'mattn/emmet-vim'
 
@@ -166,7 +172,7 @@ set nobackup
 set writebackup
 set noswapfile
 
-filetype plugin on
+filetype plugin indent on
 
 " Show the textwidth visually
 set colorcolumn=+1,+2
@@ -358,10 +364,6 @@ nnoremap <silent> <leader>dt :%s/\s\+$//<CR>
 
 exe 'inoremap <script> <C-V>' paste#paste_cmd['i']
 
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
-
 " }}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -486,6 +488,55 @@ let g:Gitv_DoNotMapCtrlKey = 1
 let g:WebDevIconsUnicodeDecorateFolderNodes = 1
 " enable open and close folder/directory glyph flags (disabled by default with 0)
 let g:DevIconsEnableFoldersOpenClose = 1
+
+" }}}
+
+"""""""""""""""asyncomplete {{{"""""""""""""""""""""""""""""""""
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
+
+set completeopt-=preview
+let g:asyncomplete_remove_duplicates = 1
+call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
+    \ 'name': 'buffer',
+    \ 'whitelist': ['*'],
+    \ 'completor': function('asyncomplete#sources#buffer#completor'),
+    \ }))
+    " \ 'blacklist': ['go'],
+call asyncomplete#register_source(asyncomplete#sources#gocode#get_source_options({
+		\ 'name': 'gocode',
+		\ 'whitelist': ['go'],
+		\ 'completor': function('asyncomplete#sources#gocode#completor'),
+		\ }))
+
+" }}}
+
+"""""""""""""""vim-go {{{"""""""""""""""""""""""""""""""""""""""
+" By default syntax-highlighting for Functions, Methods and Structs is disabled
+let g:go_highlight_types = 1
+let g:go_highlight_extra_types = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_interfaces = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_build_constraints = 1
+
+autocmd FileType go nmap <leader>r <Plug>(go-run)
+autocmd FileType go nmap <leader>b <Plug>(go-build)
+autocmd FileType go nmap <leader>t <Plug>(go-test)
+autocmd FileType go nmap <Leader>c <Plug>(go-coverage-toggle)
+autocmd FileType go nmap <Leader>i <Plug>(go-info)
+
+let g:go_fmt_command = "goimports"
+let g:go_auto_type_info = 1
+
+autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
+autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
+autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
+autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
 
 " }}}
 
