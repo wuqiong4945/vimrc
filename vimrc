@@ -78,6 +78,7 @@ call plug#end()
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General {{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+filetype plugin indent on
 let mapleader=","               " default is '\'
 
 let g:is_posix = 1              " vim's default is archaic bourne shell, bring it up to the 90s
@@ -160,8 +161,6 @@ else
 	set guifontwide=YouYuan:h16
 endif
 
-set fileformats=unix,dos,mac    " use Unix as the standard file type
-
 " }}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -172,7 +171,7 @@ set nobackup
 set writebackup
 set noswapfile
 
-filetype plugin indent on
+set fileformats=unix,dos,mac    " use Unix as the standard file type
 
 " Show the textwidth visually
 set colorcolumn=+1,+2
@@ -201,7 +200,6 @@ set backspace=indent,eol,start  " backspace for dummies
 set linebreak                   " not break word,is not used when the 'wrap' option is off
 
 set nowrap                      " do not wrap long lines
-
 " Allow to toggle wrap/nowrap
 nnoremap <silent> <leader>wr :setlocal wrap!<CR>
 
