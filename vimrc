@@ -465,7 +465,7 @@ nnoremap <silent> <leader>gg :GitGutterToggle<CR>
 
 """""""""""""""fugitive {{{"""""""""""""""""""""""""""""""""""""
 nnoremap <silent> <leader>gs :Gstatus<CR>
-nnoremap <leader>gd :Gvdiff
+nnoremap <silent> <leader>gd :Gvdiff<CR>
 
 " }}}
 
